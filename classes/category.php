@@ -30,7 +30,7 @@ class Category
     
     public static $definition = array(
         'table' => 'category',
-        'primary' => '$id_category',
+        'primary' => 'id_category',
     );
     
     public function __construct($name = null)
@@ -88,11 +88,11 @@ class Category
             $query .= ' AND c.id_parent = '.$id_parent;
         }
         
-       // print_r($query);
         return $this->database->query($query)->fetch()['id_category'];        
     }
     
-    public static function getCategoryResourceAsso($id, $type = 'id_category'){
+    public static function getCategoryResourceAsso($id, $type = 'id_category')
+    {
         if($type == "id_category"){
             $select = 'id_resource';
         }elseif($type == 'id_resource'){
