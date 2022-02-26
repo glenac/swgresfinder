@@ -22,9 +22,9 @@ include_once '../classes/category.php';
 
 define('__Secure_Key__', "QZGG7K0Adw");
 
-$option = $_GET['action'];
+$action = $_GET['action'];
 
-switch($option){
+switch($action){
     case "update" :
         updateResources();
         break;
@@ -48,14 +48,11 @@ switch($option){
        break;
    case "getResourcesCount" :
        getResourcesCount();
-       break;
-    
+       break;    
 }
 
 function updateResources()
 {
-    //$secure_key = "QZGG7K0Adw";
-    
     if($_GET['secure_key'] == __Secure_Key__){
         $resources = new Resource();
         $resources->updateResources();
