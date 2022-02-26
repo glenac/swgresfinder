@@ -39,10 +39,10 @@ class Resource
     public $unavailable_date;
     public $planets;
     
-    public $table = "resources_dev";
+    public $table = "resources";
     
     public static $definition = array(
-        'table' => 'resources_dev',
+        'table' => 'resources',
         'primary' => 'name',
     );
     
@@ -298,8 +298,6 @@ class Resource
                 
         }
     }
-    
-   
 }
 
 ?>
