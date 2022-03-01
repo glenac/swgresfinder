@@ -20,7 +20,7 @@ include_once './classes/db.php';
 include_once './classes/resource.php';
 include_once './classes/category.php';
 
-if($_SERVER['REMOTE_ADDR'] == '92.184.124.147')
+if($_SERVER['REMOTE_ADDR'] == 'YOUR_DEBUG_IP')
 {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
