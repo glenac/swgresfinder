@@ -1,5 +1,3 @@
-
-
 .footer {
   padding-top: 5rem;
   padding-bottom: 5rem;
@@ -36,9 +34,12 @@ a.res-link {
 	font-weight:bold;
 	text-decoration:none;
 }
-#footer_row{
-	max-width: 50%;
-    margin: 0 auto;
+
+@media (min-width: 992px) {
+	#footer_row{
+		max-width: 50%;
+	    margin: 0 auto;
+	}
 }
 
 .text-green{
@@ -61,7 +62,29 @@ th{
 	min-width: 75px;
 }
 
+#resourcesTreeView a{
+	text-decoration:none;
+	text-transform:capitalize;
+}
+
+#resourcesTreeView a i{
+	margin-right:5px;
+}
+
+#resourcesTreeView,
+#resourcesTreeView li{
+	list-style:none!important;
+}
+
+.res_count{text-transform: none;}
+
+
 .version_link{
 	text-decoration:none;
 }
 
+.help-window{
+	width: 75%;
+	margin: 0 auto;
+	text-align:justify;
+}

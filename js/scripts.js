@@ -27,10 +27,12 @@ function initCategoryTreeLink()
 {
 	$('.categoryTreeLink').off('click').on('click', function(e){		
 		if($(this).hasClass('tree_open'))
-			return;		
+			return;
+		tree_id = $(this).closest('.treeview-animated-list').attr('id');
+		//closeAllCateogoriesFromTree(tree_id);
 		level = $(this).data('level');
 		id_parent = $(this).data('parent');
-		getCategories(level, id_parent);
+		getCategories(level, id_parent, $(this).attr('id'));
 		
 	});
 }
@@ -38,7 +40,6 @@ function initCategoryTreeLink()
 function initCategoryTreeLinkClose()
 {
 	$('a.tree_open').off('click').on('click', function(){		
-		
 		$(this).next('ul').slideUp(function(){
 			$(this).remove();
 		});
@@ -63,7 +64,7 @@ function initCategoryTreeLinkLastItem()
 			  passive: true,
 			  success: function(result){
 				  target = "#resourceTable2"
-				  setBoostrapTable(target, result) 
+				  setBoostrapTable(target, result)
 			  }
 		});
 	});
@@ -114,7 +115,24 @@ function getPlanets(resource)
 	});
 }
 
-function getCategories(level, id_parent)
+function closeAllCateogoriesFromTree(treeId)
+{
+	console.log(treeId);
+	$('#'+treeId).find('.subCategory').each(function(e){		
+		$(this).slideUp(function(e){
+			$(this).remove();
+		});
+	});
+	
+	$('#'+treeId).find('a.tree_open').removeClass('tree_open').find('i').removeClass('bi-arrow-down-circle').addClass('bi-arrow-right-circle');
+	
+	initCategoryTreeLink();
+	initCategoryTreeLinkClose();
+	initCategoryTreeLinkLastItem();
+	getResourcesCount();
+}
+
+function getCategories(level, id_parent, tree_id)
 {	
 	level++;
 	url = url_static+"controller/controller.php?action=getCategories&level="+level+"&id_parent="+id_parent;
@@ -124,6 +142,7 @@ function getCategories(level, id_parent)
 		url: url,
 		passive: true,
 		success: function(result){
+			
 			$ul = $('<ul></ul>').addClass('subCategory');
 			
 			$.each(JSON.parse(result), function(key, value){

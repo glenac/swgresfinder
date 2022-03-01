@@ -21,6 +21,25 @@ $categories = $categoryClass->getCategoriesByDepth();
         <meta name="author" content="" />
         
         <title>SWGEmu Resource Finder - by Glenac</title>
+        
+        
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-J90VCK892E"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());        
+          gtag('config', 'G-J90VCK892E');
+        </script>
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-5TPXJT3');
+       	</script>
+        <!-- End Google Tag Manager -->                
+        
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
@@ -42,7 +61,8 @@ $categories = $categoryClass->getCategoriesByDepth();
         <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
-        <link href="css/styles.css" rel="stylesheet" />              
+        <link href="css/bootstrapCustom.min.css" rel="stylesheet" />         
+        <link href="css/styles.css" rel="stylesheet" />         
         
 	</head>
     <body id="page-top">
@@ -84,7 +104,7 @@ $categories = $categoryClass->getCategoriesByDepth();
                 <!-- Icon Divider-->
                 <div class="divider-custom divider-light">
                     <div class="divider-custom-line"></div>
-                    <div class="divider-custom-icon"><i class="fab fa-jedi-order"></i></div>
+                    <div class="divider-custom-icon">v2.0</div>
                     <div class="divider-custom-line"></div>
                 </div>
                 <!-- Masthead Subheading-->     
@@ -103,7 +123,23 @@ $categories = $categoryClass->getCategoriesByDepth();
                     <div class="divider-custom-icon"><i class="fas fa-search"></i></div>
                     <div class="divider-custom-line"></div>
                 </div>
-                <h3 class=" text-center text-uppercase text-secondary mb-0">v2.0 Beta</h3>
+                
+
+                <?php 
+               
+                    /*
+                     *  <p class="text-center mt-4"><b>Important</b>: Resources are not yet synchronized with GH on v2. This is for testing purpose until it's fully released.</p>
+                        <div class="help-window alert alert-primary">
+                        <h4 class="text-center">Recruiting Volunteers</h4>
+                        <p class="">
+                        Im looking for volunteers to help me build the trees in my database format and launch v2.0. Im currently using an online software to make things easier, but it takes time as the tree is very large.
+                        <br>Basicaly, it's only copy pasting the names from <b><a target="_blank" href="http://swgcraft.co.uk/dev/resource_tree.php?server=106&planet=0&mode=full">this page</a></b> to my tool, so anyone can do this.
+                         		<br>Please contact me via discord (<b class="text-green">Glenac#3962</b>) or email (<a href="mailto:contact@swgresfinder.com">contact@swgresfinder.com</a>) if you want to help.
+                      		</p>
+                      	</div>
+                    */
+                ?>
+                
                 <!-- Portfolio Grid Items-->
                 <div class="row justify-content-center">
                     <div class="row">
@@ -111,14 +147,17 @@ $categories = $categoryClass->getCategoriesByDepth();
                     	
                     		<nav>
                             	<div class="nav nav-tabs justify-content-center" id="nav-tab" role="tablist">
-                                	<button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Group Search</button>
+                                	<button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Search by class</button>
                                 	<button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Resource Tree</button>
+                                	<!-- <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#tab3" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Resources Unavailable</button> -->
                              	</div>
                             </nav>
                                                         
                             <div class="tab-content" id="nav-tabContent">
                               <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="nav-home-tab">
                                  <div class="col-lg-12 mx-auto mt-5">
+                                 	
+
                                  	<div class="col-lg-4 mx-auto">
                                      	<select id="tableGroupSelect" class="form-select select2"  aria-label="Default select example" searchable="Search here..">
                                 			<option value="0">-- Select --</option>
@@ -154,9 +193,8 @@ $categories = $categoryClass->getCategoriesByDepth();
                             		</table>               		
                     		  	</div>
                               </div>
-                              <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="nav-profile-tab">
+                              <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="nav-profile-tab">                              
                                
-                               <p class="text-center mt-4">Resource Tree is not complete yet</p>
                                <div class="treeview-animated w-20 border mx-auto mx-4-lg my-4 col-md-8">
                                 	<h6 class="pt-3 pl-3 mx-3">Resources Tree</h6>
                                 	<hr>
@@ -200,18 +238,73 @@ $categories = $categoryClass->getCategoriesByDepth();
                         				</tr>                    				
                         			</thead>                   		
                         		</table>
+                              </div>
+                              <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="nav-profile-tab">
+                               
+                               <p class="text-center mt-4">Not working yet</p>
+                               <div class="treeview-animated w-20 border mx-auto mx-4-lg my-4 col-md-8">
+                                	<h6 class="pt-3 pl-3 mx-3">Resources Tree</h6>
+                                	<hr>
+                                  	<ul id="resourcesTreeViewDisabled" class="treeview-animated-list mb-3">
+                                  	 <?php
+                                  	 /*
+                                  	     $categories = $categoryClass->getCategoriesByDepth();
+                                  	     foreach($categories as  $key1 => $category_1){
+                                  	      //   print_r($category_1);
+                                  	         echo '<li class="menu_'.$category_1['id_category'].'">
+                                                        <a class="categoryTreeLink categoryTreeLink_'.$category_1['id_category'].($category_1['children'] == 0 ? ' type-last-item' : '').'"
+                                                           href="javascript:void(0);"
+                                                           data-level="'.$category_1['level_depth'].'"
+                                                           data-parent="'.$category_1['id_category'].'">
+                                                        <i class="bi '.($category_1['children'] > 0 ? 'bi-arrow-right-circle' : 'bi-circle').'"></i>'.ucwords($category_1['name']).'</a>
+                                                    </li>';
+                                  	     }*/
+                                  	 //print_r($categories->getCategoriesByDepth()) //
+                                  	 
+                                  	 ?>
+                                  	</ul>
+    							</div>
+    							
+    							<table id="resourceTable3" class="resourceTable table table-responsive table-hover table-striped mt-3 align-middle">
+                        			<thead>
+                        				<tr>
+                            				<th data-field="name">name</th>
+                            				<th data-field="type_name">Type</th>
+                            				<th data-field="CR">CR</th>
+                            				<th data-field="CD">CD</th>
+                            				<th data-field="DR">DR</th>
+                            				<th data-field="FL">FL</th>
+                            				<th data-field="HR">HR</th>
+                            				<th data-field="MA">MA</th>
+                            				<th data-field="PE">PE</th>
+                            				<th data-field="OQ">OQ</th>
+                            				<th data-field="SR">SR</th>
+                            				<th data-field="UT">UT</th>
+                            				<th data-field="ER">ER</th>
+                            				<th data-field="enter_date">Age</th>
+                            				<th data-field="planet">Planet</th>
+                        				</tr>                    				
+                        			</thead>                   		
+                        		</table>
                               </div>                              
-                            </div>
-							<p class="text-center mt-5"><a class="version_link" href="https://www.swgresfinder.com/"><i class="fas fa-sign-out-alt"></i> Back to v1.0</a></p>              		
-                    	</div>
+                            </div>                              		
+                    	</div> 
 					</div>	
                 </div>
             </div>
         </section>        
 
+	  <section class="page-section bg-primary text-white mb-0" id="about">
+		<div class="col-md-8 mx-auto my-0">
+	  		<p class="text-center my-0">Data are updated once per day. There may be a delay between Galaxyharvester and this website.</p>
+	  	</div>
+	  </section>
       <footer class="footer text-center">
             <div class="container">
-                <div class="row" id="footer_row">                	
+            	<div class="col-md-8 mx-auto mb-5">
+                    <p class="text-center mt-4">Please report any bug or suggestion to: <a href="mailto:contact@swgresfinder.com">contact@swgresfinder.com</a></p>
+	  			</div>
+                <div class="row" id="footer_row">            	
                 	<h2 class="page-section-heading text-center text-uppercase text-white">CREDITS</h2>
                 	 <!-- Icon Divider-->
                     <div class="divider-custom divider-light">
