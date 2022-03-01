@@ -20,9 +20,9 @@ class Db Extends PDO
 {    
     public function __construct()
     {
-        $dsn = "mysql:host=front-ha-mysql-01.shpv.fr:3306;dbname=xzyrsuml_resources";
-        $user = "xzyrsuml_resources";
-        $passwd = "b9+hps7G#Mcc";
+        $dsn = "mysql:host=DB_HOST;dbname=DB_NAME";
+        $user = "DB_USER";
+        $passwd = "DB_PASSWORD";
         
         parent::__construct($dsn, $user, $passwd);
     }
