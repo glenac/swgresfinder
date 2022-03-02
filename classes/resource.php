@@ -17,7 +17,7 @@
  */
 
 class Resource
-{    
+{
     public $id_resource;
     public $name;
     public $galaxy_name;
@@ -50,29 +50,29 @@ class Resource
     
     public function __construct($name = null)
     {
-        $this->database = new Db();
+        $this->db = new Db();
     }
     
-   
-    
     /**
-     * 
+     *
      * @return array $group
      */
     public function getAllGroups()
-    {        
+    {
         $group = array();
         
         $query = "SELECT DISTINCT group_id FROM ".$this->table;
-        $data = $this->database->query($query)->fetchAll();
+        $data = $this->db->query($query)->fetchAll();
         
         if($data && count($data))
-        {            
+        {
             
             $data = array_reverse($data);
             foreach($data as $key => $val)
             {
-                $group[] = $val['group_id'];
+                $val_array = explode('_', $val['group_id']);
+                $val_array = array_reverse($val_array);
+                $group[] = implode('_', $val_array);
             }
         }
         
@@ -82,7 +82,7 @@ class Resource
     }
     
     /**
-     * 
+     *
      * @param string $name
      * @param int $id_parent
      * @return string
@@ -94,7 +94,7 @@ class Resource
     }
     
     /**
-     * 
+     *
      * @param int $id_category
      * @param int $children
      * @param string $recursive
@@ -102,7 +102,7 @@ class Resource
     protected function getCategoryChildren($id_category, &$children, $recursive = false)
     {
         $query = 'SELECT id_category FROM category WHERE id_parent = '.$id_category;
-        $id_children = $this->database->query($query)->fetchAll();
+        $id_children = $this->db->query($query)->fetchAll();
         
         if(count($id_children) > 0 )
         {
@@ -118,26 +118,27 @@ class Resource
     }
     
     /**
-     * 
+     *
      * @param int $group
      * @param int $active
      * @return array
      */
     public function getGroup($group, $active = 1)
-    {        
-        $db = new db();
+    {
+        $group = implode('_', array_reverse(explode('_', $group)));
+     
         $query = 'SELECT name, type_name, CR, CD, DR, FL, HR, MA, PE, OQ, SR, UT, ER, enter_date
                   FROM '.$this->table.'
                   WHERE group_id = "'.$group.'"
                   AND active = '.$active;
-            
-        $resources =  $db->query($query)->fetchAll();
+        
+        $resources =  $this->db->query($query)->fetchAll();
         if(is_array($resources) && count($resources))
         {
             $this->prepareDataForTable($resources);
         }
         
-        return $resources;  
+        return $resources;
     }
     
     /**
@@ -146,21 +147,20 @@ class Resource
      * @return array
      */
     public function getPlanets($resource)
-    {
-        $this->database = new db();
+    {       
         $planets = array();
         
         $query = 'SELECT planets FROM '.$this->table.' WHERE name ="'.$resource.'"';
-        $data = $this->database->query($query)->fetchAll();
+        $data = $this->db->query($query)->fetchAll();
         
         if($data && is_array($data) && count($data))
             $planets = explode('|', $data[0]['planets']);
             
-            return $planets;
+        return $planets;
     }
     
     /**
-     * 
+     *
      * @param unknown $id_category
      * @param number $active
      * @return array
@@ -177,7 +177,7 @@ class Resource
                     AND active = '.$active;
         
         // print_r($query);die;
-        $resources = $this->database->query($query)->fetchAll();
+        $resources = $this->db->query($query)->fetchAll();
         
         if(is_array($resources) && count($resources))
         {
@@ -188,7 +188,7 @@ class Resource
     }
     
     /**
-     * 
+     *
      * @param int $id_category
      * @param bool $recursive
      * @param int $active
@@ -219,11 +219,11 @@ class Resource
                       AND active = '.$active;
         }
         
-        return $this->database->query($query)->rowCount();
+        return $this->db->query($query)->rowCount();
     }
     
     /**
-     * 
+     *
      * @param array $resources
      */
     public function prepareDataForTable(&$resources)
@@ -259,11 +259,11 @@ class Resource
     }
     
     public function updateResources()
-    {        
+    {
         $handle = fopen($this->import_file,"r");
         $flag = true;
         $resourcesFeed = array();
-
+        
         $query = 'INSERT IGNORE INTO '.$this->table.' (name, galaxy_id, galaxy_name, enter_date, type_id, type_name, group_id, CR, CD, DR, FL, HR, MA, PE, OQ, SR, UT, ER, unavailable_date, planets) VALUES';
         $query2 = 'INSERT IGNORE INTO resources_all (name, galaxy_id, galaxy_name, enter_date, type_id, type_name, group_id, CR, CD, DR, FL, HR, MA, PE, OQ, SR, UT, ER, unavailable_date, planets) VALUES';
         
@@ -281,12 +281,12 @@ class Resource
         $query = substr($query, 0, -1);
         $query2 = substr($query2, 0, -1);
         
-        $res =  $this->database->query($query)->execute();
-        $res2 =  $this->database->query($query2)->execute(); // Table for backup with all resources
+        $res =  $this->db->query($query)->execute();
+        $res2 =  $this->db->query($query2)->execute(); // Table for backup with all resources
         
         $query = 'SELECT id_resource, name FROM '.$this->table.' WHERE name NOT IN('."'" . implode("','", $resourcesFeed) . "'".')';
         
-        $disable = $this->database->query($query)->fetchAll();
+        $disable = $this->db->query($query)->fetchAll();
         
         if(is_array($disable) && count($disable))
         {
@@ -308,42 +308,36 @@ class Resource
     public function setCategoryResourceAssoc()
     {
         $query = 'SELECT * FROM '.$this->table;
-        $resources =  $this->database->query($query)->fetchAll();
-       
+        $resources =  $this->db->query($query)->fetchAll();
+        
         foreach($resources as $key => $res)
         {
             $type = explode('_', $res['type_id']);
-
-            $id = false; 
+            
+            $id = false;
             $count = count($type);
             
-            for($i = 0; $i < $count; $i++)
-            {
+            for($i = 0; $i < $count; $i++){
                 $id = $this->getCategoryByName($type[$i], $id);
             }
             
             $id = (int) $id;
+            
             if($id > 0 && $id !== null)
             {
                 $query = 'INSERT IGNORE INTO category_resource (id_category, id_resource, type_id)
                           VALUES('.$id.', '.$res['id_resource'].', "'.$res['type_id'].'")';
                 
-                $this->database->query($query)->execute();
+                $this->db->query($query)->execute();
             }
         }
-    }    
-    
-    
-    
-    
-    
+    }
     
     public function disableResource($resource)
     {
-        $this->database->query('UPDATE '.$this->table.' SET active = 0 WHERE name = "'.$resource.'"')->execute();
+        $this->db->query('UPDATE '.$this->table.' SET active = 0 WHERE name = "'.$resource.'"')->execute();
     }
-    
-    
+        
     /**
      *
      * @param int $group
@@ -353,13 +347,12 @@ class Resource
      */
     public function getGroup2($group, $active = 1)
     {
-        $db = new db();
         $query = 'SELECT name, type_name, CR, CD, DR, FL, HR, MA, PE, OQ, SR, UT, ER, enter_date
                   FROM '.$this->table.'
                   WHERE group_id = "'.$group.'"
                   AND active = '.$active;
         
-        return $db->query($query)->fetchAll($query);
+        return $this->db->query($query)->fetchAll($query);
     }
     
     /**
@@ -367,7 +360,7 @@ class Resource
      */
     public function getResourcesByPlanet()
     {
-        $res =  $this->database->query("SELECT * FROM ".$this->table);
+        $res =  $this->db->query("SELECT * FROM ".$this->table);
         $data = $res->fetchAll();
     }
     
@@ -378,7 +371,7 @@ class Resource
      */
     public function addToUnavailable($id_resource)
     {
-        $this->database->query('INSERT INTO '.$this->table.' (id_resource) VALUES('.$id_resource.')')->execute();
+        $this->db->query('INSERT INTO '.$this->table.' (id_resource) VALUES('.$id_resource.')')->execute();
     }
 }
 
