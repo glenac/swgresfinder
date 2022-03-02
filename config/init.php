@@ -20,7 +20,8 @@ include_once './classes/db.php';
 include_once './classes/resource.php';
 include_once './classes/category.php';
 
-/*
+/* Use this with you IP Address to run debug mode
+ 
 if($_SERVER['REMOTE_ADDR'] == 'YOUR_DEBUG_IP')
 {
     ini_set('display_errors', 1);
